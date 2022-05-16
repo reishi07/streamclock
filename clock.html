@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@mdi/font@6.6.96/css/materialdesignicons.min.css"
+        />
+        <link rel="stylesheet" href="clock.css" />
+    </head>
+    <body onload="startTime()">
+        <div id="clock"></div>
+        <script>
+            function startTime() {
+                let now = new Date();
+                let ms = now.getMilliseconds();
+                setInterval(setTime, 1000 - ms);
+            }
+            function setTime() {
+                let now = new Date();
+                let h = leadingZero(format12(now.getHours()));
+                let m = leadingZero(now.getMinutes());
+                let icon;
+                if (
+                    (now.getHours() > 4 && now.getHours() < 8) ||
+                    (now.getHours() > 17 && now.getHours() < 21)
+                ) {
+                    icon = " <span class='mdi mdi-weather-sunset'></span>";
+                } else if (now.getHours() >= 8 && now.getHours() <= 17) {
+                    icon = " <span class='mdi mdi-weather-sunny'></span>";
+                } else {
+                    icon = " <span class='mdi mdi-weather-night'></span>";
+                }
+                document.getElementById("clock").innerHTML = h + ":" + m + icon;
+                setTimeout(startTime, 1000);
+            }
+            function leadingZero(i) {
+                if (i < 10) {
+                    i = "0" + i;
+                }
+                return i;
+            }
+            function format12(i) {
+                if (i == 0) {
+                    i = 12;
+                } else if (i > 12) {
+                    i -= 12;
+                }
+                return i;
+            }
+            function meridian(i) {
+                if (i < 12) {
+                    return "AM";
+                }
+                return "PM";
+            }
+        </script>
+    </body>
+</html>
